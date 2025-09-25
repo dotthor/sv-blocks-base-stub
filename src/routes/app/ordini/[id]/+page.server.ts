@@ -18,6 +18,7 @@ export const actions: Actions = {
                 form,
             });
         }
+        console.log(form.data);
         return {
             form,
         };

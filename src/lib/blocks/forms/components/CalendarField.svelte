@@ -16,17 +16,13 @@
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import * as Form from '$lib/components/ui/form/index.js';
+	import type { BaseFormFieldProps } from '../types';
 
-	let {
-		form,
-		formData,
-		name,
-		label,
-		description,
-		disabled,
-		required = false,
-		resize = 'vertical'
-	} = $props();
+	type Props = BaseFormFieldProps & {
+		description?: string;
+	};
+
+	let { form, formData, name, label, description, disabled, required = false }: Props = $props();
 
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long'
@@ -40,7 +36,11 @@
 <Form.Field {form} name="dob" class="flex flex-col">
 	<Form.Control>
 		{#snippet children({ props })}
-			<Form.Label>Date of birth</Form.Label>
+			{#if label !== false && label !== null}
+				<Form.Label>
+					{typeof label === 'string' ? label : name.charAt(0).toUpperCase() + name.slice(1)}
+				</Form.Label>
+			{/if}
 			<Popover.Root>
 				<Popover.Trigger
 					{...props}
@@ -55,6 +55,7 @@
 				</Popover.Trigger>
 				<Popover.Content class="w-auto p-0" side="top">
 					<Calendar
+						{disabled}
 						type="single"
 						value={value as DateValue}
 						bind:placeholder
@@ -71,7 +72,10 @@
 					/>
 				</Popover.Content>
 			</Popover.Root>
-			<Form.Description>Your date of birth is used to calculate your age</Form.Description>
+			{#if description}
+				<Form.Description>{description}</Form.Description>
+			{/if}
+
 			<Form.FieldErrors />
 			<input hidden value={$formData.dob} name={props.name} />
 		{/snippet}

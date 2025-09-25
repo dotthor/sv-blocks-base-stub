@@ -32,7 +32,7 @@
 		addButtonText = `Add ${legend.slice(0, -1)}`, // Remove 's' from plural legend
 		itemDescription,
 		defaultValue = '',
-		minItems = 0,
+		minItems = 1,
 		maxItems = 20,
 		placeholder,
 		rows = 3
@@ -100,10 +100,10 @@
 			{#if itemDescription}
 				<Form.Description class="sr-only">{itemDescription}</Form.Description>
 			{/if}
+			<Form.FieldErrors />
 		</Form.ElementField>
 	{/each}
 	<Form.FieldErrors />
-
 	{#if canAdd()}
 		<Button variant="outline" size="sm" onclick={addItem}>
 			<IcoPlus />
