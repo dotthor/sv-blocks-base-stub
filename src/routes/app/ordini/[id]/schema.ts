@@ -19,7 +19,7 @@ export const formSchema = z.object({
     dob: z
         .string()
         .refine((v) => v, { message: "A date of birth is required." }),
-    language: z.enum(['en', 'fr', 'de', 'es', 'pt', 'ru', 'ja', 'ko', 'zh'])
+    language: z.enum(['fr', 'en', 'de', 'es', 'pt', 'ru', 'ja', 'ko', 'zh'])
 });
 
 export type FormSchema = typeof formSchema;

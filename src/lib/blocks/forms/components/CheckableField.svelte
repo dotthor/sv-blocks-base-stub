@@ -2,11 +2,13 @@
 	import * as Form from '$lib/components/ui/form/index.js';
 	import type { BaseFormFieldProps } from '../types.js';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
+	import Switch from '$lib/components/ui/switch/switch.svelte';
 
 	type Props = BaseFormFieldProps & {
 		label: string; // Override to make label mandatory for checkboxes
 		checked?: boolean;
 		withBackground?: boolean;
+		style?: 'checkbox' | 'switch';
 	};
 
 	let {
@@ -18,7 +20,8 @@
 		disabled,
 		checked,
 		required = false,
-		withBackground = false
+		withBackground = false,
+		style = 'checkbox'
 	}: Props = $props();
 </script>
 
@@ -31,13 +34,23 @@
 						? 'start'
 						: 'center'} gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
 				>
-					<Checkbox
-						{disabled}
-						{required}
-						{...props}
-						bind:checked={$formData[name]}
-						class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
-					/>
+					{#if style === 'switch'}
+						<Switch
+							{disabled}
+							{required}
+							{...props}
+							bind:checked={$formData[name]}
+							class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+						/>
+					{:else}
+						<Checkbox
+							{disabled}
+							{required}
+							{...props}
+							bind:checked={$formData[name]}
+							class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+						/>
+					{/if}
 					<div class="grid gap-1.5 font-normal">
 						<p class="text-sm leading-none font-medium">{label}</p>
 						{#if description}
@@ -47,7 +60,11 @@
 				</Form.Label>
 			{:else}
 				<div class="flex items-{description ? 'start' : 'center'} gap-3">
-					<Checkbox {disabled} {required} {...props} bind:checked={$formData[name]} />
+					{#if style === 'switch'}
+						<Switch {disabled} {required} {...props} bind:checked={$formData[name]} />
+					{:else}
+						<Checkbox {disabled} {required} {...props} bind:checked={$formData[name]} />
+					{/if}
 					<div class="grid gap-2">
 						<Form.Label>{label}</Form.Label>
 						{#if description}
