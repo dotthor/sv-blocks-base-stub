@@ -1,23 +1,19 @@
 <script lang="ts">
-	import DialogResponsive from '$lib/blocks/components/DialogResponsive.svelte';
-	import { TextField, TextareaField, DynamicField, CheckableField } from '$lib/blocks/forms';
+	import { DialogResponsive, Grid } from '$lib/blocks/components';
+	import {
+		BaseForm,
+		TextField,
+		TextareaField,
+		DynamicField,
+		CheckableField,
+		RadioGroupField
+	} from '$lib/blocks/forms';
 	import CalendarField from '$lib/blocks/forms/components/CalendarField.svelte';
 	import ComboboxField from '$lib/blocks/forms/components/ComboboxField.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import * as Form from '$lib/components/ui/form/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
 	import { formSchema, type FormSchema } from './schema';
-	import SuperDebug, { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { SettingsIcon } from '@lucide/svelte/icons';
+	import SuperDebug, { type SuperValidated, type Infer } from 'sveltekit-superforms';
 
 	let { data }: { data: { form: SuperValidated<Infer<FormSchema>> } } = $props();
-
-	const form = superForm(data.form, {
-		validators: zodClient(formSchema)
-	});
-
-	const { form: formData, enhance } = form;
 
 	const languages = [
 		{ label: 'English', value: 'en' },
@@ -30,31 +26,76 @@
 		{ label: 'Korean', value: 'ko' },
 		{ label: 'Chinese', value: 'zh', disabled: true }
 	];
+
+	const notificationOptions = [
+		{
+			label: 'All new messages',
+			value: 'all',
+			description: 'Get notified for every new message'
+		},
+		{
+			label: 'Direct messages and mentions',
+			value: 'mentions',
+			description: 'Only important notifications'
+		},
+		{
+			label: 'Nothing',
+			value: 'none',
+			description: 'No notifications at all'
+		}
+	];
 </script>
 
-<form method="POST" use:enhance>
-	<TextField {form} {formData} name="username" />
-	<TextareaField {form} {formData} name="bio" />
-	<CheckableField {form} {formData} name="tos" label="Accept ToS and die!" />
+<BaseForm {data} schema={formSchema}>
+	{#snippet children({ form, formData })}
+		<!-- Username and Bio demonstrate different column spans -->
+		<TextField {form} {formData} name="username" gridClass="sm:col-span-3" />
+		<TextareaField {form} {formData} name="bio" gridClass="col-span-full" />
 
-	<DialogResponsive
-		title="Settings"
-		description="Configure your application settings."
-		triggerText="Settings"
-	>
-		<!-- {#snippet trigger(props)}
-			<Button variant="ghost" size="icon" {...props}>
-				<SettingsIcon />
-			</Button>
-		{/snippet} -->
+		<!-- Checkbox spanning full width -->
+		<CheckableField
+			{form}
+			{formData}
+			name="tos"
+			label="Accept ToS and die!"
+			description="Ciaoooooo"
+			gridClass="col-span-full"
+			withBackground
+		/>
 
-		{#snippet children()}
-			<DynamicField {form} {formData} name="skills" />
-			<CalendarField {form} {formData} name="birthdate" />
-			<ComboboxField {form} {formData} name="language" options={languages} searchable={false} />
-		{/snippet}
-	</DialogResponsive>
+		<!-- Dialog with nested components using Grid component -->
+		<DialogResponsive>
+			{#snippet children()}
+				<Grid>
+					<DynamicField {form} {formData} name="skills" legend="Skills" />
+					<CalendarField
+						{form}
+						{formData}
+						name="birthdate"
+						label="Birth Date"
+						gridClass="col-span-2"
+					/>
+				</Grid>
+			{/snippet}
+		</DialogResponsive>
 
-	<Form.Button>Submit</Form.Button>
-</form>
-<SuperDebug data={$formData}></SuperDebug>
+		<!-- Language selector in a smaller column -->
+		<ComboboxField
+			{form}
+			{formData}
+			name="language"
+			options={languages}
+			gridClass="sm:col-span-2"
+		/>
+
+		<RadioGroupField
+			options={notificationOptions}
+			{form}
+			{formData}
+			name="notifications"
+			withBackground
+		/>
+
+		<RadioGroupField options={notificationOptions} {form} {formData} name="notifications" />
+	{/snippet}
+</BaseForm>

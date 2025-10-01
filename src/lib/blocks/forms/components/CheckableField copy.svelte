@@ -7,16 +7,26 @@
 	import IcoPlus from '@lucide/svelte/icons/plus';
 	import type { BaseFormFieldProps } from '../types.js';
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
+	import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
+
+	type Option = {
+		label: string;
+		value: string;
+		description?: string;
+		disabled?: boolean;
+	};
 
 	type FieldType = 'text' | 'email' | 'url' | 'number' | 'tel' | 'textarea';
 
 	type Props = BaseFormFieldProps & {
+		options: Option[];
 		name: string; // Array field name (e.g., 'urls', 'skills', etc.)
 		fieldType?: FieldType;
 		legend?: string; // Legend text for the fieldset
 		addButtonText?: string;
 		itemDescription?: string; // Description for individual items
 		defaultValue?: any; // Default value when adding new items
+		withBackground?: boolean;
 		minItems?: number;
 		maxItems?: number;
 		placeholder?: string;
@@ -27,11 +37,14 @@
 		form,
 		formData,
 		name,
+		options,
 		fieldType = 'text',
 		legend = name.charAt(0).toUpperCase() + name.slice(1),
 		addButtonText = `Add ${legend.slice(0, -1)}`, // Remove 's' from plural legend
 		itemDescription,
+		description,
 		defaultValue = '',
+		withBackground = false,
 		minItems = 1,
 		maxItems = 20,
 		placeholder,
@@ -61,50 +74,34 @@
 <div class={gridClass}>
 	<Form.Fieldset {form} {name}>
 		<Form.Legend>{legend}</Form.Legend>
-		{#each $formData[name] as _, i}
-			<Form.ElementField {form} name="{name}[{i}]">
-				<Form.Control>
-					{#snippet children({ props })}
-						<div class="flex gap-2">
-							<Form.Label class="sr-only">{legend.slice(0, -1)} {i + 1}</Form.Label>
-
-							{#if fieldType === 'textarea'}
-								<Textarea
-									{...props}
-									bind:value={$formData[name][i]}
-									{placeholder}
-									{rows}
-									class="flex-1"
-								/>
-							{:else}
-								<Input
-									type={fieldType}
-									{...props}
-									bind:value={$formData[name][i]}
-									{placeholder}
-									class="flex-1"
-								/>
-							{/if}
-
-							{#if canRemove()}
-								<Button
-									variant="destructive"
-									size="icon"
-									class="shrink-0"
-									onclick={() => removeItemByIndex(i)}
+		<RadioGroup.Root bind:value={$formData[name]} class="flex flex-col space-y-1" {name}>
+			{#each options as option (option.value)}
+				<div class="flex items-center space-y-0 space-x-3">
+					<Form.Control>
+						{#snippet children({ props })}
+							{#if withBackground}
+								<Form.Label
+									class="flex items-{option.description
+										? 'start'
+										: 'center'} gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
 								>
-									<IcoBin />
-								</Button>
+									<RadioGroup.Item disabled={option.disabled} value={option.value} {...props} />
+									<div class="grid gap-1.5 font-normal">
+										<p class="text-sm leading-none font-medium">{option.label}</p>
+										{#if option.description}
+											<p class="text-sm text-muted-foreground">{option.description}</p>
+										{/if}
+									</div></Form.Label
+								>
+							{:else}
+								<RadioGroup.Item disabled={option.disabled} value={option.value} {...props} />
+								<Form.Label class="font-normal">{option.label}</Form.Label>
 							{/if}
-						</div>
-					{/snippet}
-				</Form.Control>
-				{#if itemDescription}
-					<Form.Description class="sr-only">{itemDescription}</Form.Description>
-				{/if}
-				<Form.FieldErrors />
-			</Form.ElementField>
-		{/each}
+						{/snippet}
+					</Form.Control>
+				</div>
+			{/each}
+		</RadioGroup.Root>
 		<Form.FieldErrors />
 		{#if canAdd()}
 			<Button variant="outline" size="sm" onclick={addItem}>

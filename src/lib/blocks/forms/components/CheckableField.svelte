@@ -21,60 +21,63 @@
 		checked,
 		required = false,
 		withBackground = false,
-		style = 'checkbox'
+		style = 'checkbox',
+		gridClass = 'col-span-full'
 	}: Props = $props();
 </script>
 
-<Form.Field {form} {name}>
-	<Form.Control>
-		{#snippet children({ props })}
-			{#if withBackground}
-				<Form.Label
-					class="flex items-{description
-						? 'start'
-						: 'center'} gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
-				>
-					{#if style === 'switch'}
-						<Switch
-							{disabled}
-							{required}
-							{...props}
-							bind:checked={$formData[name]}
-							class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
-						/>
-					{:else}
-						<Checkbox
-							{disabled}
-							{required}
-							{...props}
-							bind:checked={$formData[name]}
-							class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
-						/>
-					{/if}
-					<div class="grid gap-1.5 font-normal">
-						<p class="text-sm leading-none font-medium">{label}</p>
-						{#if description}
-							<p class="text-sm text-muted-foreground">{description}</p>
+<div class={gridClass}>
+	<Form.Field {form} {name}>
+		<Form.Control>
+			{#snippet children({ props })}
+				{#if withBackground}
+					<Form.Label
+						class="flex items-{description
+							? 'start'
+							: 'center'} gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
+					>
+						{#if style === 'switch'}
+							<Switch
+								{disabled}
+								{required}
+								{...props}
+								bind:checked={$formData[name]}
+								class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+							/>
+						{:else}
+							<Checkbox
+								{disabled}
+								{required}
+								{...props}
+								bind:checked={$formData[name]}
+								class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+							/>
 						{/if}
-					</div>
-				</Form.Label>
-			{:else}
-				<div class="flex items-{description ? 'start' : 'center'} gap-3">
-					{#if style === 'switch'}
-						<Switch {disabled} {required} {...props} bind:checked={$formData[name]} />
-					{:else}
-						<Checkbox {disabled} {required} {...props} bind:checked={$formData[name]} />
-					{/if}
-					<div class="grid gap-2">
-						<Form.Label>{label}</Form.Label>
-						{#if description}
-							<p class="text-sm text-muted-foreground">{description}</p>
+						<div class="grid gap-1.5 font-normal">
+							<p class="text-sm leading-none font-medium">{label}</p>
+							{#if description}
+								<p class="text-sm text-muted-foreground">{description}</p>
+							{/if}
+						</div>
+					</Form.Label>
+				{:else}
+					<div class="flex items-{description ? 'start' : 'center'} gap-3">
+						{#if style === 'switch'}
+							<Switch {disabled} {required} {...props} bind:checked={$formData[name]} />
+						{:else}
+							<Checkbox {disabled} {required} {...props} bind:checked={$formData[name]} />
 						{/if}
+						<div class="grid gap-2">
+							<Form.Label>{label}</Form.Label>
+							{#if description}
+								<p class="text-sm text-muted-foreground">{description}</p>
+							{/if}
+						</div>
 					</div>
-				</div>
-			{/if}
-		{/snippet}
-	</Form.Control>
+				{/if}
+			{/snippet}
+		</Form.Control>
 
-	<Form.FieldErrors />
-</Form.Field>
+		<Form.FieldErrors />
+	</Form.Field>
+</div>

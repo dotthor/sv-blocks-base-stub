@@ -17,26 +17,29 @@
 		placeholder,
 		description,
 		disabled,
-		required = false
+		required = false,
+		gridClass = 'sm:col-span-3'
 	}: Props = $props();
 </script>
 
-<Form.Field {form} {name}>
-	<Form.Control>
-		{#snippet children({ props })}
-			{#if label !== false && label !== null}
-				<Form.Label>
-					{typeof label === 'string' ? label : name.charAt(0).toUpperCase() + name.slice(1)}
-				</Form.Label>
-			{/if}
+<div class={gridClass}>
+	<Form.Field {form} {name}>
+		<Form.Control>
+			{#snippet children({ props })}
+				{#if label !== false && label !== null}
+					<Form.Label>
+						{typeof label === 'string' ? label : name.charAt(0).toUpperCase() + name.slice(1)}
+					</Form.Label>
+				{/if}
 
-			<Input {...props} {type} bind:value={$formData[name]} {placeholder} {disabled} {required} />
-		{/snippet}
-	</Form.Control>
+				<Input {...props} {type} bind:value={$formData[name]} {placeholder} {disabled} {required} />
+			{/snippet}
+		</Form.Control>
 
-	{#if description}
-		<Form.Description>{description}</Form.Description>
-	{/if}
+		{#if description}
+			<Form.Description>{description}</Form.Description>
+		{/if}
 
-	<Form.FieldErrors />
-</Form.Field>
+		<Form.FieldErrors />
+	</Form.Field>
+</div>

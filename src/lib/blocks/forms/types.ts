@@ -9,4 +9,5 @@ export type BaseFormFieldProps = {
     required?: boolean;
     disabled?: boolean;
     class?: string;
+    gridClass?: string; // CSS class for grid layout positioning
 };

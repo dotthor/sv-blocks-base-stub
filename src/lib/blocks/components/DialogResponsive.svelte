@@ -7,9 +7,9 @@
 
 	type Props = {
 		// Content props
-		title: string;
+		title?: string;
 		description?: string;
-		triggerText: string;
+		triggerText?: string;
 
 		// Behavior props
 		open?: boolean;
@@ -37,7 +37,7 @@
 	let {
 		title,
 		description,
-		triggerText,
+		triggerText = 'Open',
 		open = $bindable(false),
 		onOpenChange,
 		triggerVariant = 'outline',
@@ -128,7 +128,7 @@
 				</Drawer.Footer>
 			{:else}
 				<Drawer.Footer class="pt-2">
-					<Drawer.Close class={buttonVariants({ variant: 'outline' })}>Cancel</Drawer.Close>
+					<Drawer.Close class={buttonVariants({ variant: 'outline' })}>Close</Drawer.Close>
 				</Drawer.Footer>
 			{/if}
 		</Drawer.Content>
