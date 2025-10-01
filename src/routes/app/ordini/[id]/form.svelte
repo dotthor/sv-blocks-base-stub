@@ -10,6 +10,7 @@
 	} from '$lib/blocks/forms';
 	import CalendarField from '$lib/blocks/forms/components/CalendarField.svelte';
 	import ComboboxField from '$lib/blocks/forms/components/ComboboxField.svelte';
+	import PasswordField from '$lib/blocks/forms/components/PasswordField.svelte';
 	import { formSchema, type FormSchema } from './schema';
 	import SuperDebug, { type SuperValidated, type Infer } from 'sveltekit-superforms';
 
@@ -89,13 +90,13 @@
 		/>
 
 		<RadioGroupField
-			options={notificationOptions}
 			{form}
 			{formData}
+			options={notificationOptions}
 			name="notifications"
 			withBackground
+			orientation="horizontal"
 		/>
-
-		<RadioGroupField options={notificationOptions} {form} {formData} name="notifications" />
+		<PasswordField />
 	{/snippet}
 </BaseForm>

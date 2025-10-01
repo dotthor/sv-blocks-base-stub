@@ -34,7 +34,7 @@
 					<Form.Label
 						class="flex items-{description
 							? 'start'
-							: 'center'} gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
+							: 'center'} gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-primary has-[[aria-checked=true]]:bg-primary/5 has-[[aria-checked=true]]:ring-1 has-[[aria-checked=true]]:ring-primary/20"
 					>
 						{#if style === 'switch'}
 							<Switch
@@ -42,7 +42,7 @@
 								{required}
 								{...props}
 								bind:checked={$formData[name]}
-								class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+								class="data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
 							/>
 						{:else}
 							<Checkbox
@@ -50,7 +50,7 @@
 								{required}
 								{...props}
 								bind:checked={$formData[name]}
-								class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+								class="data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
 							/>
 						{/if}
 						<div class="grid gap-1.5 font-normal">

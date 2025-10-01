@@ -20,6 +20,7 @@
 		addButtonText?: string;
 		itemDescription?: string; // Description for individual items
 		defaultValue?: any; // Default value when adding new items
+		orientation?: 'horizontal' | 'vertical';
 		withBackground?: boolean;
 		minItems?: number;
 		maxItems?: number;
@@ -32,41 +33,49 @@
 		formData,
 		name,
 		options,
+		orientation = 'vertical',
 		legend = name.charAt(0).toUpperCase() + name.slice(1),
 		withBackground = false,
 		gridClass = 'col-span-full'
 	}: Props = $props();
+
+	$inspect(orientation);
 </script>
 
 <div class={gridClass}>
 	<Form.Fieldset {form} {name}>
 		<Form.Legend>{legend}</Form.Legend>
-		<RadioGroup.Root bind:value={$formData[name]} class="flex flex-col space-y-1" {name}>
+		<RadioGroup.Root
+			{orientation}
+			bind:value={$formData[name]}
+			class="flex {orientation == 'horizontal' ? 'flex-row gap-3' : 'flex-col space-y-1'}"
+			{name}
+		>
 			{#each options as option (option.value)}
-				<div class="flex items-center space-y-0 space-x-3">
-					<Form.Control>
-						{#snippet children({ props })}
-							{#if withBackground}
-								<Form.Label
-									class="flex items-{option.description
-										? 'start'
-										: 'center'} w-full gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
-								>
-									<RadioGroup.Item disabled={option.disabled} value={option.value} {...props} />
-									<div class="grid gap-1.5 font-normal">
-										<p class="text-sm leading-none font-medium">{option.label}</p>
-										{#if option.description}
-											<p class="text-sm text-muted-foreground">{option.description}</p>
-										{/if}
-									</div></Form.Label
-								>
-							{:else}
+				<Form.Control>
+					{#snippet children({ props })}
+						{#if withBackground}
+							<Form.Label
+								class="flex items-{option.description
+									? 'start'
+									: 'center'} w-full gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-primary has-[[aria-checked=true]]:bg-primary/5 has-[[aria-checked=true]]:ring-1 has-[[aria-checked=true]]:ring-primary/20"
+							>
+								<RadioGroup.Item disabled={option.disabled} value={option.value} {...props} />
+								<div class="grid gap-1.5 font-normal">
+									<p class="text-sm leading-none font-medium">{option.label}</p>
+									{#if option.description}
+										<p class="text-sm text-muted-foreground">{option.description}</p>
+									{/if}
+								</div></Form.Label
+							>
+						{:else}
+							<div class="flex items-center space-y-0 space-x-3">
 								<RadioGroup.Item disabled={option.disabled} value={option.value} {...props} />
 								<Form.Label class="font-normal">{option.label}</Form.Label>
-							{/if}
-						{/snippet}
-					</Form.Control>
-				</div>
+							</div>
+						{/if}
+					{/snippet}
+				</Form.Control>
 			{/each}
 		</RadioGroup.Root>
 		<Form.FieldErrors />
