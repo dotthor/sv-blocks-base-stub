@@ -4,7 +4,6 @@
 	import DotsVerticalIcon from '@lucide/svelte/icons/ellipsis-vertical';
 
 	type Props = {
-		actions?: Array<'edit' | 'copy' | 'delete' | 'view'>;
 		onEdit?: () => void;
 		onCopy?: () => void;
 		onDelete?: () => void;
@@ -12,14 +11,7 @@
 		className?: string;
 	};
 
-	let {
-		actions = ['edit', 'copy', 'delete'],
-		onEdit,
-		onCopy,
-		onDelete,
-		onView,
-		className = ''
-	}: Props = $props();
+	let { onEdit, onCopy, onDelete, onView, className = '' }: Props = $props();
 
 	function getActionHandler(action: string) {
 		switch (action) {
@@ -68,18 +60,27 @@
 		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end" class="w-32">
-		{#each actions as action, index}
-			{@const handler = getActionHandler(action)}
-			{@const label = getActionLabel(action)}
-			{@const destructive = isDestructive(action)}
+		{@const actions = [
+			onView && 'view',
+			onEdit && 'edit',
+			onCopy && 'copy',
+			onDelete && 'delete'
+		].filter(Boolean) as string[]}
 
-			{#if index > 0 && action === 'delete'}
-				<DropdownMenu.Separator />
-			{/if}
+		{#if actions.length}
+			{#each actions as action, index}
+				{@const handler = getActionHandler(action)}
+				{@const label = getActionLabel(action)}
+				{@const destructive = isDestructive(action)}
 
-			<DropdownMenu.Item variant={destructive ? 'destructive' : undefined} onclick={handler}>
-				{label}
-			</DropdownMenu.Item>
-		{/each}
+				{#if index > 0 && action === 'delete'}
+					<DropdownMenu.Separator />
+				{/if}
+
+				<DropdownMenu.Item variant={destructive ? 'destructive' : undefined} onclick={handler}>
+					{label}
+				</DropdownMenu.Item>
+			{/each}
+		{/if}
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

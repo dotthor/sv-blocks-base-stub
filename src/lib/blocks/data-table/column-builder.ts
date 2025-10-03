@@ -115,7 +115,7 @@ class ColumnBuilder<TData> {
         const {
             label,
             type = 'text',
-            align = 'left',
+            align = 'right',
             onSave,
             sortable = true,
             hideable = true,
@@ -157,7 +157,6 @@ class ColumnBuilder<TData> {
 
     actions(config: ActionsColumnConfig = {}): ColumnDef<TData> {
         const {
-            actions = ['edit', 'copy', 'delete'],
             onEdit,
             onCopy,
             onDelete,
@@ -177,7 +176,7 @@ class ColumnBuilder<TData> {
                     onView: onView ? () => onView(row.original) : undefined
                 };
 
-                return renderComponent(ActionsCell, { actions, ...handlers, className });
+                return renderComponent(ActionsCell, { ...handlers, className });
             },
             enableSorting: false,
             enableHiding: hideable

@@ -27,7 +27,7 @@
 		renderComponent,
 		renderSnippet
 	} from '$lib/components/ui/data-table/index.js';
-	import LayoutColumnsIcon from '@lucide/svelte/icons/columns';
+	import IcoEye from '@lucide/svelte/icons/eye';
 	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
 	import ChevronsLeftIcon from '@lucide/svelte/icons/chevrons-left';
 	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
@@ -225,7 +225,7 @@
 	});
 </script>
 
-<div class="w-full flex-col justify-start gap-6">
+<div class="flex w-full flex-col justify-start gap-6">
 	<div class="flex items-center justify-between px-4 lg:px-6">
 		<div class="flex items-center gap-2">
 			{#if searchable}
@@ -239,15 +239,15 @@
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
 					{#snippet child({ props })}
-						<Button variant="outline" size="sm" {...props}>
-							<LayoutColumnsIcon />
-							<span class="hidden lg:inline">Customize Columns</span>
+						<Button variant="outline" {...props}>
+							<IcoEye />
+							<span class="hidden lg:inline">Show columns</span>
 							<span class="lg:hidden">Columns</span>
 							<ChevronDownIcon />
 						</Button>
 					{/snippet}
 				</DropdownMenu.Trigger>
-				<DropdownMenu.Content align="end" class="w-56">
+				<DropdownMenu.Content align="start">
 					{#each table
 						.getAllColumns()
 						.filter((col) => typeof col.accessorFn !== 'undefined' && col.getCanHide()) as column (column.id)}
@@ -326,9 +326,9 @@
 							</Table.Row>
 						{/each}
 					</Table.Header>
-					<Table.Body class="**:data-[slot=table-cell]:first:w-8">
+					<Table.Body>
 						{#if table.getRowModel().rows?.length}
-							{#each table.getRowModel().rows as row, index (row.id)}
+							{#each table.getRowModel().rows as row (row.id)}
 								{@render StaticRow({ row })}
 							{/each}
 						{:else}

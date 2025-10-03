@@ -15,7 +15,7 @@
 	let {
 		value,
 		type = 'text',
-		align = 'left',
+		align = 'right',
 		className = '',
 		rowId,
 		fieldKey,
@@ -47,6 +47,6 @@
 		id={inputId}
 		{type}
 		value={value?.toString() || ''}
-		class="h-8 w-16 border-transparent bg-transparent shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30 {alignClass} {className}"
+		class="ml-auto h-8 w-16 border-transparent bg-transparent shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30 {alignClass} {className}"
 	/>
 </form>

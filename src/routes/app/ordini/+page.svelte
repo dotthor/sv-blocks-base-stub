@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createColumns } from '$lib/blocks/data-table';
 	import DataTable from '$lib/blocks/data-table/data-table.svelte';
+	import Copiable from '$lib/blocks/foo/copiable.svelte';
 	import type { PageProps } from './$types';
 	import type { Schema } from './schemas.js';
 
@@ -659,19 +660,11 @@
 		(col) => col.text('reviewer', { label: 'Reviewer' }),
 		(col) =>
 			col.actions({
-				actions: ['edit', 'copy', 'delete'],
 				onEdit: (row) => console.log('Edit:', row),
-				onCopy: (row) => console.log('Copy:', row),
 				onDelete: (row) => console.log('Delete:', row)
 			})
 	]);
 </script>
 
-<DataTable
-	{columns}
-	{data}
-	selectable={true}
-	draggable={true}
-	searchable={true}
-	pagination={true}
-/>
+<Copiable data="sasso" />
+<DataTable {columns} {data} />
