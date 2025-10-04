@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DialogResponsive, Grid } from '$lib/blocks/components';
+	import Copiable from '$lib/blocks/foo/copiable.svelte';
 	import {
 		BaseForm,
 		TextField,
@@ -11,6 +12,8 @@
 	import CalendarField from '$lib/blocks/forms/components/CalendarField.svelte';
 	import ComboboxField from '$lib/blocks/forms/components/ComboboxField.svelte';
 	import PasswordField from '$lib/blocks/forms/components/PasswordField.svelte';
+	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
+	import { is } from 'drizzle-orm';
 	import { formSchema, type FormSchema } from './schema';
 	import SuperDebug, { type SuperValidated, type Infer } from 'sveltekit-superforms';
 
@@ -98,5 +101,6 @@
 			orientation="horizontal"
 		/>
 		<PasswordField />
+		<Copiable data="+39 349 70 50 213" />
 	{/snippet}
 </BaseForm>

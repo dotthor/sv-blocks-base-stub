@@ -666,5 +666,4 @@
 	]);
 </script>
 
-<Copiable data="sasso" />
 <DataTable {columns} {data} />
